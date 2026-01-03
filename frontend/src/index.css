@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #1a0505;
+    /* maroon-900 */
+    color: white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: rgba(234, 179, 8, 0.3);
+    /* gold-500 with 30% opacity */
+    color: #facc15;
+    /* gold-400 */
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply backdrop-blur-xl border shadow-xl transition-all duration-300;
+    background-color: rgba(45, 10, 10, 0.4);
+    /* maroon-800/40 */
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-card:hover {
+    @apply shadow-2xl;
+    background-color: rgba(45, 10, 10, 0.6);
+    /* maroon-800/60 */
+    border-color: rgba(212, 175, 55, 0.2);
+    /* gold-metallic/20 */
+    box-shadow: 0 25px 50px -12px rgba(212, 175, 55, 0.05);
+    /* shadow-gold-metallic/5 */
+  }
+
+  .input-glass {
+    @apply border text-white transition-all;
+    background-color: rgba(26, 5, 5, 0.5);
+    /* maroon-900/50 */
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .input-glass::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .input-glass:focus {
+    @apply outline-none ring-1;
+    border-color: #2563eb;
+    /* royal-500 */
+    --tw-ring-color: rgba(37, 99, 235, 0.2);
+    /* royal-500/20 */
+  }
+
+  .text-glow-gold {
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  }
+}
