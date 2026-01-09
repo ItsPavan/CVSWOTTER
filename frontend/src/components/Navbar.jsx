@@ -13,7 +13,7 @@ export default function Navbar({ session }) {
                 <div className="flex items-center gap-2">
                     <Layers className="h-6 w-6 text-gold-500" />
                     <h1 className="text-xl font-bold tracking-tight text-white">
-                        ResumeAI <span className="text-gold-500">Architect</span>
+                        Top<span className="text-gold-500">Pile</span>
                     </h1>
                 </div>
 

@@ -1,0 +1,30 @@
+
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: https://toppile.evolviscend.com/api
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_URL=https://toppile.evolviscend.com/api
+      # Note: VITE_ vars are baked in at build time. 
+      # For a true runtime config, we'd need a different approach, 
+      # but for this docker-compose, we assume build-time arg or similar.
+      # For simplicity in this generated file, we assume standard build.
+    depends_on:
+      - backend
+    restart: always

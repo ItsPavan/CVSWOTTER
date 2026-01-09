@@ -31,7 +31,7 @@ export default function Auth() {
                         {isLogin ? 'Welcome back' : 'Create an account'}
                     </h2>
                     <p className="mt-2 text-sm text-muted-foreground">
-                        {isLogin ? 'Enter your credentials to analyze your resume' : 'Get started with ResumeAI Architect'}
+                        {isLogin ? 'Enter your credentials to analyze your resume' : 'Get started with TopPile'}
                     </p>
                 </div>
 
