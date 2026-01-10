@@ -29,6 +29,7 @@ origins = [
     "https://www.evolviscend.com",
     "https://cvswotter-p60xtdawt-pavan-hareshs-projects.vercel.app",
     "https://cvswotter.onrender.com",
+    "*",
 ]
 
 app.add_middleware(
