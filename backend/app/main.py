@@ -26,7 +26,9 @@ origins = [
     "http://localhost:5174",
     "http://localhost:3000",
     "https://toppile.evolviscend.com",
-    "http://toppile.evolviscend.com",
+    "https://www.evolviscend.com",
+    "https://cvswotter-p60xtdawt-pavan-hareshs-projects.vercel.app",
+    "https://cvswotter.onrender.com",
 ]
 
 app.add_middleware(
