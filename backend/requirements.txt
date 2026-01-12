@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+groq
+supabase
+pymupdf
+reportlab
+python-multipart
+pydantic-settings
+python-dotenv
+chromadb
+celery
+redis
+requests
+python-docx
