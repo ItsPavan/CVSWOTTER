@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { ConfigProvider, theme } from 'antd';
 import { supabase } from './lib/supabase'
 import { setAuthToken } from './lib/api'
+
+// Components
 import Navbar from './components/Navbar'
 import Dashboard from './pages/Dashboard'
 import Auth from './pages/Auth'
-
-import { ConfigProvider, theme } from 'antd';
+import InterviewPrep from './pages/InterviewPrep'
+import AnalysisResult from './pages/AnalysisResult'
+import Profile from './pages/Profile'
 
 function App() {
   const [session, setSession] = useState(null)
@@ -62,10 +67,22 @@ function App() {
       <div className="min-h-screen bg-[#1E0903] text-[#F5F5F5] font-sans antialiased selection:bg-[#D17D08] selection:text-white">
         <Navbar session={session} />
         <main className="container mx-auto p-4">
-          {!session ? <Auth /> : <Dashboard />}
+          {!session ? (
+            <Auth />
+          ) : (
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/analysis/:id" element={<AnalysisResult />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/create-portfolio" element={<InterviewPrep />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          )}
         </main>
       </div>
     </ConfigProvider>
   )
 }
+
 export default App

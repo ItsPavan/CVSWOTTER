@@ -64,3 +64,5 @@ async def validation_exception_handler(request, exc):
 app.include_router(upload.router)
 app.include_router(analyze.router)
 app.include_router(generate.router)
+
+# Forced reload to pick up .env changes

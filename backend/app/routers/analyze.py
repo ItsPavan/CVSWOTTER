@@ -70,6 +70,31 @@ async def analyze_resume(request: AnalyzeRequest, authorization: str = Header(No
         
         if save_response.data:
              logger.info("Analysis saved successfully")
+             
+             # 5. History Limit (Keep only last 5)
+             try:
+                 # Fetch all analysis IDs ordered by created_at desc
+                 history_response = user_client.table("analyses").select("id, created_at").order("created_at", desc=True).execute()
+                 
+                 if history_response.data and len(history_response.data) > 5:
+                     logger.info(f"Cleaning up history. Total count: {len(history_response.data)}")
+                     # Keep top 5, delete the rest
+                     ids_to_keep = [item['id'] for item in history_response.data[:5]]
+                     # Delete where id NOT in ids_to_keep. 
+                     # Supabase JS/Python client doesn't have a simple "not in" for delete easily without multiple calls or filters.
+                     # Actually .not_.in_("id", ids_to_keep) should work if supported, or we filter explicitly.
+                     # "neq" checks generated SQL, but "in" filter is easier.
+                     # Let's delete items where id is IN the list of items to remove.
+                     ids_to_remove = [item['id'] for item in history_response.data[5:]]
+                     
+                     if ids_to_remove:
+                         user_client.table("analyses").delete().in_("id", ids_to_remove).execute()
+                         logger.info(f"Removed {len(ids_to_remove)} old analysis records")
+                         
+             except Exception as cleanup_err:
+                 # Non-critical, just log it
+                 logger.error(f"History cleanup failed: {cleanup_err}")
+
              return {
                  "analysis_id": save_response.data[0]['id'],
                  **analysis_result
@@ -80,3 +105,50 @@ async def analyze_resume(request: AnalyzeRequest, authorization: str = Header(No
         return analysis_result
 
     return analysis_result
+
+@router.get("/analyses/{analysis_id}")
+async def get_analysis(analysis_id: str, authorization: str = Header(None)):
+    """
+    Get a specific analysis result by ID.
+    """
+    if not authorization:
+        raise HTTPException(status_code=401, detail="Missing Authorization Header")
+
+    try:
+        token = authorization.split(" ")[1]
+        user_client = get_supabase_client(token)
+        
+        # Select specific fields or all
+        response = user_client.table("analyses").select("*").eq("id", analysis_id).execute()
+        
+        if not response.data:
+            raise HTTPException(status_code=404, detail="Analysis not found")
+            
+        return response.data[0]
+        
+    except Exception as e:
+        logger.error(f"Error fetching analysis: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/analyses")
+async def get_analyses(authorization: str = Header(None)):
+    """
+    Get recent analysis history for the user (Limit 5).
+    """
+    if not authorization:
+        raise HTTPException(status_code=401, detail="Missing Authorization Header")
+
+    try:
+        token = authorization.split(" ")[1]
+        user_client = get_supabase_client(token)
+        
+        # Fetch last 5 analyses
+        # We also need to get the job title/company if possible. 
+        # Since we don't store them explicitly, we'll return the ID, score, date.
+        response = user_client.table("analyses").select("id, created_at, match_score, jd_text").order("created_at", desc=True).limit(5).execute()
+        
+        return response.data
+        
+    except Exception as e:
+        logger.error(f"Error fetching history: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
