@@ -1,9 +1,9 @@
-# CVSWOTTER - AI Resume Architect
+# VitaeVantage 
 
 ![Analysis Dashboard](docs/assets/analysis.png)
 
 ## Overview
-**CVSWOTTER** is a powerful AI-driven application designed to optimize your resume for specific job descriptions (JDs). By leveraging advanced Large Language Models (LLMs), it analyzes your resume against a target JD, provides a SWOT analysis, and intelligently rewrites content to maximize ATS (Applicant Tracking System) compatibility and impact.
+**VitaeVantage** is a powerful AI-driven application designed to optimize your resume for specific job descriptions (JDs). By leveraging advanced Large Language Models (LLMs), it analyzes your resume against a target JD, provides a SWOT analysis, and intelligently rewrites content to maximize ATS (Applicant Tracking System) compatibility and impact.
 
 ## ✨ Key Features
 - **Smart Resume Parsing**: Support for PDF and DOCX uploads, or direct text paste.
